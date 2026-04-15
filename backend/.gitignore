@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+.venv/
+
+# Database
+*.db
+
+# Environment
+.env
+
+# Dataset (too large)
+backend/dataset/
+backend/ml_models/*.h5
+
+# Keep only the .keras model
+!backend/ml_models/*.keras
+!backend/ml_models/*.json
+
+# OS
+.DS_Store
+Thumbs.db

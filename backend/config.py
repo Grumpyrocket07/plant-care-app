@@ -1,0 +1,13 @@
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    DATABASE_URL: str = "sqlite:///./plant_disease.db"
+    SECRET_KEY: str = "change-this-to-random-secret-key-in-production"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    WEATHER_API_KEY: str = ""
+    
+    class Config:
+        env_file = ".env"
+
+settings = Settings()

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Plant Care App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+        <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#28a745">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/628/628283.png">
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">🌱 Plant Care</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="detect.html">Detect Disease</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header shadow-custom">
+            <h2>Welcome back, <span id="userName">User</span>! 👋</h2>
+            <p class="mb-0">Manage your farms and detect plant diseases</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h1 class="display-1">📸</h1>
+                        <h5>Detect Disease</h5>
+                        <p class="text-muted">Upload a plant leaf image</p>
+                        <a href="detect.html" class="btn btn-success">Start Detection</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h1 class="display-1">🌾</h1>
+                        <h5>Add New Farm</h5>
+                        <p class="text-muted">Create a new farm/plot</p>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFarmModal">Add Farm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Farms Section -->
+        <div class="mb-4">
+            <h4 class="mb-3">My Farms</h4>
+            <div id="farmsContainer" class="row">
+                <!-- Farms will be loaded here -->
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Farm Modal -->
+    <div class="modal fade" id="addFarmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Farm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFarmForm">
+                        <div class="mb-3">
+                            <label for="farmName" class="form-label">Farm Name</label>
+                            <input type="text" class="form-control" id="farmName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cropType" class="form-label">Crop Type</label>
+                            <select class="form-select" id="cropType" required>
+                                <option value="">Select crop...</option>
+                                <option value="tomato">Tomato</option>
+                                <option value="potato">Potato</option>
+                                <option value="corn">Corn</option>
+                                <option value="apple">Apple</option>
+                                <option value="grape">Grape</option>
+                                <option value="pepper">Pepper</option>
+                                <option value="strawberry">Strawberry</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="area" class="form-label">Area (acres)</label>
+                            <input type="number" step="0.1" class="form-control" id="area" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="plantingDate" class="form-label">Planting Date</label>
+                            <input type="date" class="form-control" id="plantingDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location (optional)</label>
+                            <input type="text" class="form-control" id="location">
+                        </div>
+                        <div class="alert alert-danger d-none" id="farmError"></div>
+                        <button type="submit" class="btn btn-success w-100">Add Farm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Check authentication
+        if (!auth.isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.logout();
+        });
+
+        // Load farms
+        async function loadFarms() {
+            const token = auth.getToken();
+            const container = document.getElementById('farmsContainer');
+            
+            try {
+                const farms = await api.getFarms(token);
+                
+                if (farms.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12 text-center text-muted">
+                            <p>No farms yet. Add your first farm to get started!</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = farms.map(farm => {
+                        const plantingDate = new Date(farm.planting_date);
+                        const today = new Date();
+                        const daysAfterPlanting = Math.floor((today - plantingDate) / (1000 * 60 * 60 * 24));
+                        
+                        return `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card farm-card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${farm.name}</h5>
+                                        <p class="card-text">
+                                            <strong>Crop:</strong> ${farm.crop_type}<br>
+                                            <strong>Area:</strong> ${farm.area} acres<br>
+                                            <strong>Days After Planting:</strong> ${daysAfterPlanting} days
+                                        </p>
+                                        <a href="detect.html?farm_id=${farm.id}" class="btn btn-sm btn-success">Detect Disease</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">Error loading farms: ${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Add farm form
+        document.getElementById('addFarmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const token = auth.getToken();
+            const errorDiv = document.getElementById('farmError');
+            errorDiv.classList.add('d-none');
+            
+            const farmData = {
+                name: document.getElementById('farmName').value,
+                crop_type: document.getElementById('cropType').value,
+                area: parseFloat(document.getElementById('area').value),
+                planting_date: document.getElementById('plantingDate').value,
+                location: document.getElementById('location').value || null
+            };
+            
+            try {
+                await api.createFarm(token, farmData);
+                
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('addFarmModal')).hide();
+                
+                // Reset form
+                document.getElementById('addFarmForm').reset();
+                
+                // Reload farms
+                loadFarms();
+                
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('d-none');
+            }
+        });
+
+        // Load farms on page load
+        loadFarms();
+    </script>
+    <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+        .then((reg) => console.log('Service Worker registered', reg))
+        .catch((err) => console.log('Service Worker not registered', err));
+    }
+    </script>
+</body>
+</html>

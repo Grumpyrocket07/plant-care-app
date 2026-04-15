@@ -1,0 +1,154 @@
+{
+  "Apple___Apple_scab": {
+    "treatment": "Apply fungicides containing captan or sulfur. Remove infected leaves and fallen fruit.",
+    "prevention": "Plant resistant varieties. Ensure good air circulation. Avoid overhead watering."
+  },
+  "Apple___Black_rot": {
+    "treatment": "Prune infected branches. Apply fungicide sprays during the growing season.",
+    "prevention": "Remove mummified fruit. Improve drainage. Use resistant cultivars."
+  },
+  "Apple___Cedar_apple_rust": {
+    "treatment": "Apply fungicides in early spring. Remove nearby cedar trees if possible.",
+    "prevention": "Plant resistant apple varieties. Maintain tree health with proper fertilization."
+  },
+  "Apple___healthy": {
+    "treatment": "No treatment needed. Continue regular care.",
+    "prevention": "Maintain good practices: proper watering, fertilization, and pruning."
+  },
+  "Blueberry___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Ensure acidic soil (pH 4.5-5.5). Mulch and water regularly."
+  },
+  "Cherry_(including_sour)___Powdery_mildew": {
+    "treatment": "Apply sulfur or neem oil sprays. Prune to improve air circulation.",
+    "prevention": "Avoid overhead watering. Plant in sunny locations."
+  },
+  "Cherry_(including_sour)___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Regular pruning and proper fertilization."
+  },
+  "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+    "treatment": "Apply fungicides if severe. Remove crop debris after harvest.",
+    "prevention": "Rotate crops. Use resistant hybrids. Avoid dense planting."
+  },
+  "Corn_(maize)___Common_rust_": {
+    "treatment": "Usually not economical to treat. Plant resistant varieties.",
+    "prevention": "Early planting. Use resistant hybrids."
+  },
+  "Corn_(maize)___Northern_Leaf_Blight": {
+    "treatment": "Apply fungicides for severe infections. Remove infected debris.",
+    "prevention": "Crop rotation. Resistant hybrids. Avoid excessive nitrogen."
+  },
+  "Corn_(maize)___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Balanced fertilization. Proper spacing for air circulation."
+  },
+  "Grape___Black_rot": {
+    "treatment": "Apply fungicides from bud break to harvest. Remove mummified fruit.",
+    "prevention": "Prune for air circulation. Remove infected plant material."
+  },
+  "Grape___Esca_(Black_Measles)": {
+    "treatment": "No effective chemical treatment. Prune infected wood.",
+    "prevention": "Avoid wounding vines. Use clean pruning tools."
+  },
+  "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+    "treatment": "Apply copper-based fungicides. Remove infected leaves.",
+    "prevention": "Ensure good drainage. Avoid overhead irrigation."
+  },
+  "Grape___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Regular pruning. Proper trellis management."
+  },
+  "Orange___Haunglongbing_(Citrus_greening)": {
+    "treatment": "No cure available. Remove infected trees to prevent spread.",
+    "prevention": "Control psyllid insects. Use disease-free nursery stock."
+  },
+  "Peach___Bacterial_spot": {
+    "treatment": "Apply copper sprays. Remove severely infected trees.",
+    "prevention": "Plant resistant varieties. Avoid overhead watering."
+  },
+  "Peach___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Proper pruning and thinning of fruit."
+  },
+  "Pepper,_bell___Bacterial_spot": {
+    "treatment": "Apply copper-based bactericides. Remove infected plants.",
+    "prevention": "Use disease-free seeds. Rotate crops. Avoid overhead watering."
+  },
+  "Pepper,_bell___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Adequate spacing. Balanced fertilization."
+  },
+  "Potato___Early_blight": {
+    "treatment": "Apply fungicides containing chlorothalonil. Remove infected foliage.",
+    "prevention": "Crop rotation. Use certified disease-free seed potatoes."
+  },
+  "Potato___Late_blight": {
+    "treatment": "Apply fungicides immediately. Destroy infected plants.",
+    "prevention": "Plant resistant varieties. Avoid overhead irrigation. Good air circulation."
+  },
+  "Potato___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Proper hilling. Adequate watering."
+  },
+  "Raspberry___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Annual pruning. Remove old canes."
+  },
+  "Soybean___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Crop rotation. Proper row spacing."
+  },
+  "Squash___Powdery_mildew": {
+    "treatment": "Apply sulfur or potassium bicarbonate sprays. Remove heavily infected leaves.",
+    "prevention": "Plant resistant varieties. Ensure good air circulation."
+  },
+  "Strawberry___Leaf_scorch": {
+    "treatment": "Remove infected leaves. Apply fungicides if severe.",
+    "prevention": "Use resistant varieties. Avoid overhead watering."
+  },
+  "Strawberry___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Mulch plants. Remove old leaves in spring."
+  },
+  "Tomato___Bacterial_spot": {
+    "treatment": "Apply copper-based sprays. Remove infected plants.",
+    "prevention": "Use disease-free transplants. Avoid overhead watering. Crop rotation."
+  },
+  "Tomato___Early_blight": {
+    "treatment": "Apply fungicides containing chlorothalonil or copper. Remove lower infected leaves.",
+    "prevention": "Mulch plants. Water at base. Stake plants for air circulation."
+  },
+  "Tomato___Late_blight": {
+    "treatment": "Apply fungicides immediately. Remove and destroy infected plants.",
+    "prevention": "Plant resistant varieties. Avoid wetting foliage. Good air circulation."
+  },
+  "Tomato___Leaf_Mold": {
+    "treatment": "Improve ventilation. Apply fungicides if needed.",
+    "prevention": "Space plants properly. Avoid high humidity. Prune lower leaves."
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "treatment": "Apply fungicides. Remove infected lower leaves.",
+    "prevention": "Mulch to prevent soil splash. Rotate crops. Remove debris."
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "treatment": "Spray with water to dislodge mites. Use insecticidal soap or neem oil.",
+    "prevention": "Maintain adequate moisture. Avoid over-fertilizing with nitrogen."
+  },
+  "Tomato___Target_Spot": {
+    "treatment": "Apply fungicides. Remove infected plant parts.",
+    "prevention": "Crop rotation. Avoid overhead watering. Good air circulation."
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "treatment": "No cure. Remove infected plants. Control whiteflies.",
+    "prevention": "Use reflective mulches. Plant resistant varieties. Control whitefly populations."
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "treatment": "No cure available. Remove and destroy infected plants.",
+    "prevention": "Use disease-free seeds. Wash hands after handling tobacco. Disinfect tools."
+  },
+  "Tomato___healthy": {
+    "treatment": "No treatment needed.",
+    "prevention": "Proper spacing. Staking. Regular watering and fertilization."
+  }
+}

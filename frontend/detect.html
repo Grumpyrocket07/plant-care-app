@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detect Disease - Plant Care App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#28a745">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/628/628283.png">
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">🌱 Plant Care</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="detect.html">Detect Disease</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-custom">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4">🔬 Disease Detection</h3>
+
+                        <!-- Upload Section -->
+                        <div id="uploadSection">
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="fileInput" accept="image/*" capture="environment" class="d-none">
+                                <h1 class="display-1">📷</h1>
+                                <h5>Upload Plant Leaf Image</h5>
+                                <p class="text-muted">Click to select or drag & drop</p>
+                                <p class="text-muted small">Supports: JPG, PNG</p>
+                            </div>
+
+                            <div id="previewSection" class="d-none text-center">
+                                <img id="previewImage" class="preview-image" alt="Preview">
+                                <div class="mt-3">
+                                    <button class="btn btn-success btn-lg" id="analyzeBtn">
+                                        <span id="analyzeText">Analyze Image</span>
+                                        <span id="analyzeSpinner" class="spinner-border spinner-border-sm d-none ms-2"></span>
+                                    </button>
+                                    <button class="btn btn-secondary btn-lg ms-2" id="resetBtn">Choose Another</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div id="resultsSection" class="d-none">
+                            <div class="result-card card p-4 mb-3">
+                                <h4 class="mb-3">🎯 Detection Results</h4>
+                                
+                                <div class="mb-4">
+                                    <h5>Disease Detected:</h5>
+                                    <h3 class="text-success" id="diseaseName">-</h3>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5>Confidence:</h5>
+                                    <span class="badge bg-success confidence-badge" id="confidence">-</span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5>💊 Treatment:</h5>
+                                    <p id="treatment" class="mb-0">-</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h5>🛡️ Prevention:</h5>
+                                    <p id="prevention" class="mb-0">-</p>
+                                </div>
+
+                                <!-- Top 3 Predictions -->
+                                <div class="mt-4">
+                                    <h6 class="text-muted">Alternative Predictions:</h6>
+                                    <div id="top3Container"></div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-lg" id="detectAnotherBtn">Detect Another</button>
+                            </div>
+                        </div>
+
+                        <!-- Error Section -->
+                        <div id="errorSection" class="alert alert-danger d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Check authentication
+        if (!auth.isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.logout();
+        });
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewSection = document.getElementById('previewSection');
+        const previewImage = document.getElementById('previewImage');
+        const uploadSection = document.getElementById('uploadSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const errorSection = document.getElementById('errorSection');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const detectAnotherBtn = document.getElementById('detectAnotherBtn');
+
+        let selectedFile = null;
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // File selection
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        function handleFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            selectedFile = file;
+            
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                uploadArea.classList.add('d-none');
+                previewSection.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Reset
+        resetBtn.addEventListener('click', () => {
+            selectedFile = null;
+            fileInput.value = '';
+            uploadArea.classList.remove('d-none');
+            previewSection.classList.add('d-none');
+            resultsSection.classList.add('d-none');
+            errorSection.classList.add('d-none');
+        });
+
+        // Analyze image
+        analyzeBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            const token = auth.getToken();
+            const analyzeText = document.getElementById('analyzeText');
+            const analyzeSpinner = document.getElementById('analyzeSpinner');
+
+            // Show loading
+            analyzeBtn.disabled = true;
+            analyzeText.textContent = 'Analyzing...';
+            analyzeSpinner.classList.remove('d-none');
+            errorSection.classList.add('d-none');
+
+            try {
+                const result = await api.detectDisease(token, selectedFile);
+
+                // Show results
+                document.getElementById('diseaseName').textContent = result.disease;
+                document.getElementById('confidence').textContent = result.confidence + '%';
+                document.getElementById('treatment').textContent = result.treatment;
+                document.getElementById('prevention').textContent = result.prevention;
+
+                // Show top 3 predictions
+                if (result.top_3_predictions) {
+                    const top3Html = result.top_3_predictions.map((pred, index) => `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>${index + 1}. ${pred.disease}</span>
+                            <span class="badge bg-secondary">${pred.confidence}%</span>
+                        </div>
+                    `).join('');
+                    document.getElementById('top3Container').innerHTML = top3Html;
+                }
+
+                uploadSection.classList.add('d-none');
+                resultsSection.classList.remove('d-none');
+
+            } catch (error) {
+                errorSection.textContent = 'Error: ' + error.message;
+                errorSection.classList.remove('d-none');
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeText.textContent = 'Analyze Image';
+                analyzeSpinner.classList.add('d-none');
+            }
+        });
+
+        // Detect another
+        detectAnotherBtn.addEventListener('click', () => {
+            resetBtn.click();
+            uploadSection.classList.remove('d-none');
+        });
+    </script>
+    <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+        .then((reg) => console.log('Service Worker registered', reg))
+        .catch((err) => console.log('Service Worker not registered', err));
+    }
+    </script>
+</body>
+</html>
